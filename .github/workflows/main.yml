@@ -38,7 +38,7 @@ jobs:
           python preprocessing/automate_Kansha.py \
             --data='Shipping_raw.csv' \
             --target_column='Reached.on.Time_Y.N' \
-            --save_path_train='preprocessing'
+            --save_path='preprocessing'
 
       # 5. Commit dan Push hasilnya
       - name: Commit and Push changes

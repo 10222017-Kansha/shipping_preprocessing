@@ -38,7 +38,8 @@ jobs:
           python preprocessing/automate_Kansha.py \
             --data='Shipping_raw.csv' \
             --target_column='Reached.on.Time_Y.N' \
-            --file_path='preprocessing'
+            --save_path_train='preprocessing\train.csv' \
+            --save_path_test='preprocessing\test.csv'
 
       # 5. Commit dan Push hasilnya
       - name: Commit and Push changes
@@ -48,7 +49,7 @@ jobs:
           git config --global user.email ${{ secrets.email }}
           
           # Add file spesifik yang ada di dalam folder preprocessing
-          git add shipping_train.csv shipping_test.csv
+          git add preprocessing/shipping_train.csv preprocessing/shipping_test.csv
           
           # Cek status dan Commit (menggunakan || echo agar tidak error jika tidak ada perubahan)
           git commit -m "Automate Preprocessing Success!" || echo "No changes to commit"

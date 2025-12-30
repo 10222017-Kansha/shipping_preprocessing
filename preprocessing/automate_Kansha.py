@@ -37,8 +37,7 @@ def preprocess_data(data, target_column, save_path):
 
     # Pipeline untuk fitur kategoris
     categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('encoder', LabelEncoder())
+        ('imputer', SimpleImputer(strategy='most_frequent'))
     ])
 
     # Column Transformer
@@ -48,7 +47,7 @@ def preprocess_data(data, target_column, save_path):
             ('cat', categorical_transformer, categorical_features)
         ]
     )
-
+    
     # Memisahkan target
     X = df.drop(columns=[target_column])
     y = df[target_column]
@@ -66,6 +65,12 @@ def preprocess_data(data, target_column, save_path):
     shipping_train = pd.concat([X_train_final, y_train], axis=1)
     X_test_final = pd.DataFrame(X_test, index=y_test.index)
     shipping_test = pd.concat([X_test_final, y_test], axis=1)
+
+    # Melakukan feature encoding menggunakan LabelEncoder() untuk fitur kategorikal
+    label_encoder = LabelEncoder()
+    for col in categorical_features:
+        shipping_train[col] = label_encoder.fit_transform(shipping_train[col])
+        shipping_test[col] = label_encoder.fit_transform(shipping_test[col])
 
     # Export to csv
     shipping_train.to_csv(f"{save_path}/train.csv")

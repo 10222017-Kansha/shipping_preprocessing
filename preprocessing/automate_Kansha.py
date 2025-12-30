@@ -67,8 +67,8 @@ def preprocess_data(data, target_column, save_path):
     shipping_test = pd.concat([X_test_final, y_test], axis=1)
 
     # Export to csv
-    shipping_train.to_csv(f"{save_path}/Train.csv")
-    shipping_test.to_csv(f"{save_path}/Test.csv")
+    shipping_train.to_csv(f"{save_path}/train.csv")
+    shipping_test.to_csv(f"{save_path}/test.csv")
 
 if __name__ == '__main__':
     fire.Fire(preprocess_data)

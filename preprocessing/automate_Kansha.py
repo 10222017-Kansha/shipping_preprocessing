@@ -4,6 +4,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 import pandas as pd
+import fire
 
 def preprocess_data(data, target_column, save_path):
     # Menentukan fitur numerik dan kategoris
@@ -68,3 +69,6 @@ def preprocess_data(data, target_column, save_path):
     # Export to csv
     shipping_train.to_csv(f"{save_path}/Train.csv")
     shipping_test.to_csv(f"{save_path}/Test.csv")
+
+if __name__ == '__main__':
+    fire.Fire(preprocess_data)

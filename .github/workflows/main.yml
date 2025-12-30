@@ -30,7 +30,7 @@ jobs:
       # 3. Install Library yang dibutuhkan
       - name: Install Dependencies
         run: |
-          pip install pandas sklearn fire
+          pip install pandas scikit-learn fire
 
       # 4. Menjalankan Script
       - name: Run Preprocessing Function

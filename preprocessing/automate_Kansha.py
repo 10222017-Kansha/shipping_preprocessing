@@ -1,7 +1,7 @@
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 from sklearn import set_config
 from sklearn.model_selection import train_test_split
 import pandas as pd

@@ -1,0 +1,57 @@
+name: Data Pipeline Automation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Memberikan izin agar workflow bisa melakukan push balik ke repo
+permissions:
+  contents: write
+
+jobs:
+  automate_preprocess:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Mengambil kode dari repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Menyiapkan Python
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.7"
+
+      # 3. Install Library yang dibutuhkan
+      - name: Install Dependencies
+        run: |
+          pip install pandas sklearn fire
+
+      # 4. Menjalankan Script
+      - name: Run Preprocessing Function
+        run: |
+          python preprocessing/automate.py \
+            --data='Shipping_raw.csv' \
+            --target_column='Reached.on.Time_Y.N' \
+            --save_path_train='preprocessing'
+
+      # 5. Commit dan Push hasilnya
+      - name: Commit and Push changes
+        run: |
+          # Konfigurasi Identitas
+          git config --global user.name ${{ secrets.username }}
+          git config --global user.email ${{ secrets.email }}
+          
+          # Add file spesifik yang ada di dalam folder preprocessing
+          git add preprocessing/shipping_train.csv preprocessing/shipping_test.csv
+          
+          # Cek status dan Commit (menggunakan || echo agar tidak error jika tidak ada perubahan)
+          git commit -m "Automate Preprocessing Success!" || echo "No changes to commit"
+          
+          # Push ke repository
+          git push

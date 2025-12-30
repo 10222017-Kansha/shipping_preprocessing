@@ -38,7 +38,7 @@ def preprocess_data(data, target_column, save_path):
     # Pipeline untuk fitur kategoris
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('encoder', LabelEncoder(handle_unknown='ignore'))
+        ('encoder', LabelEncoder())
     ])
 
     # Column Transformer

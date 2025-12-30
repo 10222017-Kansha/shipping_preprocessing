@@ -7,10 +7,11 @@ import pandas as pd
 import fire
 
 def preprocess_data(data, target_column, save_path):
+    df = pd.read_csv(data)
+    df = df.drop(columns=['ID'])
     # Menentukan fitur numerik dan kategoris
-    data = data.drop(columns=['ID'])
-    numeric_features = data.select_dtypes(include=['float64', 'int64']).columns.tolist()
-    categorical_features = data.select_dtypes(include=['object']).columns.tolist()
+    numeric_features = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
+    categorical_features = df.select_dtypes(include=['object']).columns.tolist()
 
     # Pastikan target_column tidak ada di numeric_features atau categorical_features
     if target_column in numeric_features:
@@ -19,14 +20,14 @@ def preprocess_data(data, target_column, save_path):
         categorical_features.remove(target_column)
 
     # Menghapus kolom yang missing values nya lebih dari 75% total dataset
-    missing_values = data.isnull().sum()
-    over = missing_values[missing_values >= ((3/4)*data.shape[0])].index
-    data = data.drop(columns=over)
+    missing_values = df.isnull().sum()
+    over = missing_values[missing_values >= ((3/4)*df.shape[0])].index
+    df = df.drop(columns=over)
 
     # Menghapus baris yang terduplikat
-    duplicate = data.duplicated().sum()
+    duplicate = df.duplicated().sum()
     if duplicate.any():
-        data = data.drop_duplicates()
+        df = df.drop_duplicates()
 
     # Pipeline untuk fitur numerik
     numeric_transformer = Pipeline(steps=[
@@ -49,8 +50,8 @@ def preprocess_data(data, target_column, save_path):
     )
 
     # Memisahkan target
-    X = data.drop(columns=[target_column])
-    y = data[target_column]
+    X = df.drop(columns=[target_column])
+    y = df[target_column]
 
     # Membagi data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
